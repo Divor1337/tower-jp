@@ -502,10 +502,10 @@
   <aside class="win-toast" id="winToast" aria-live="polite">
     <div class="flag">🎮</div>
     <div class="win-text">
-      <div class="win-title"><span id="toastId">ID: min***</span> только что <b>зашёл в игру</b></div>
-      <div class="win-subtitle" id="toastGame">AVIAMASTERS 2 · сейчас онлайн</div>
+      <div class="win-title"><span id="toastId">ID: art***</span> только что <b>выиграл</b></div>
+      <div class="win-subtitle" id="toastGame">AVIAMASTERS 2 · только что</div>
     </div>
-    <div class="win-amount" id="toastAmount">онлайн</div>
+    <div class="win-amount" id="toastAmount">₽43 000</div>
   </aside>
 
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
@@ -526,11 +526,16 @@
       winsStart: 123,
       countdownSeconds: 180,
       jackpotItems: [
-        { id: "kim***", game: "AVIAMASTERS 2", amount: "онлайн" },
-        { id: "min***", game: "TOWER RUSH", amount: "онлайн" },
-        { id: "seo***", game: "TAPPY BIRD", amount: "онлайн" },
-        { id: "han***", game: "Telegram-канал", amount: "открыто" },
-        { id: "woo***", game: "AVIAMASTERS 2", amount: "онлайн" }
+        { id: "art***", game: "AVIAMASTERS 2", action: "выиграл", amount: "₽43 000", icon: "🎮" },
+        { id: "max***", game: "TOWER RUSH", action: "забрал", amount: "₽18 700", icon: "🏗️" },
+        { id: "den***", game: "TAPPY BIRD", action: "выиграл", amount: "₽12 400", icon: "🐤" },
+        { id: "kir***", game: "AVIAMASTERS 2", action: "поднял", amount: "₽58 600", icon: "🚀" },
+        { id: "nik***", game: "TOWER RUSH", action: "забрал", amount: "₽9 800", icon: "🎯" },
+        { id: "ser***", game: "TAPPY BIRD", action: "выиграл", amount: "₽21 300", icon: "🐤" },
+        { id: "and***", game: "Telegram-канал", action: "открыл", amount: "бонус", icon: "💬" },
+        { id: "ily***", game: "AVIAMASTERS 2", action: "выиграл", amount: "₽34 900", icon: "🎮" },
+        { id: "rom***", game: "TOWER RUSH", action: "поднял", amount: "₽27 500", icon: "🏗️" },
+        { id: "tim***", game: "TAPPY BIRD", action: "забрал", amount: "₽15 800", icon: "🐤" }
       ]
     };
 
@@ -544,6 +549,8 @@
     const toastGame = $("#toastGame");
     const toastAmount = $("#toastAmount");
     const modal = $("#modal");
+    const toastFlag = document.querySelector(".flag");
+    const toastTitle = document.querySelector(".win-title");
 
     let currentOnline = CONFIG.onlineStart;
     let currentWins = CONFIG.winsStart;
@@ -578,9 +585,16 @@
       const item = CONFIG.jackpotItems[tickerIndex % CONFIG.jackpotItems.length];
       tickerIndex += 1;
 
+      toastFlag.textContent = item.icon || "🎮";
       toastId.textContent = `ID: ${item.id}`;
       toastGame.textContent = `${item.game} · только что`;
       toastAmount.textContent = item.amount;
+
+      if (item.amount === "бонус") {
+        toastTitle.innerHTML = `<span id="toastId">ID: ${item.id}</span> только что <b>${item.action} бонус</b>`;
+      } else {
+        toastTitle.innerHTML = `<span id="toastId">ID: ${item.id}</span> только что <b>${item.action}</b>`;
+      }
 
       winToast.classList.add("is-visible");
       window.clearTimeout(toastTimer);
