@@ -1,493 +1,615 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1220" />
-  <title>タワーラッシュ — 今すぐプレイ</title>
-  <meta name="description" content="タワーラッシュを今すぐプレイ。1タップで開始。" />
-
-  <meta property="og:title" content="タワーラッシュ — 今すぐプレイ" />
-  <meta property="og:description" content="1タップで開始。迷わずプレイ。" />
-  <meta property="og:type" content="website" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Выбор игры</title>
+  <meta name="description" content="Выберите, что по душе и играйте." />
 
   <style>
-    :root{
-      --bg:#0b1220;
-      --bg2:#0e1830;
-      --stroke: rgba(255,255,255,.10);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-
-      --tr-yellow:#F6B318;
-      --tr-yellow2:#FFCE4A;
-      --tr-blue:#2AA8FF;
-      --tr-blue2:#46D3FF;
-      --tr-ink:#0b0f14;
-
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --r: 22px;
+    :root {
+      --bg: #070914;
+      --card: rgba(16, 22, 42, 0.86);
+      --card-2: rgba(19, 27, 52, 0.94);
+      --stroke: rgba(255, 255, 255, 0.11);
+      --stroke-strong: rgba(255, 255, 255, 0.18);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.68);
+      --soft: rgba(255, 255, 255, 0.46);
+      --green: #52ff9a;
+      --yellow: #ffd15a;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      --radius: 26px;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans JP", "Hiragino Sans",
-        "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, Segoe UI, Roboto, Arial;
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(900px 520px at 18% 10%, rgba(246,179,24,.22), transparent 60%),
-        radial-gradient(900px 520px at 82% 20%, rgba(42,168,255,.18), transparent 58%),
-        radial-gradient(900px 700px at 50% 95%, rgba(255,255,255,.05), transparent 65%),
-        linear-gradient(180deg, var(--bg2), var(--bg));
-      overflow-x:hidden;
+        radial-gradient(circle at 50% -10%, rgba(95, 54, 255, 0.38), transparent 34%),
+        radial-gradient(circle at 0% 30%, rgba(255, 54, 122, 0.16), transparent 38%),
+        radial-gradient(circle at 100% 70%, rgba(40, 168, 255, 0.13), transparent 34%),
+        var(--bg);
+      overflow-x: hidden;
     }
 
-    /* subtle blueprint grid */
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       background-size: 34px 34px;
-      mask-image: radial-gradient(circle at 50% 20%, rgba(0,0,0,.9), transparent 70%);
-      pointer-events:none;
+      mask-image: linear-gradient(to bottom, black, transparent 82%);
     }
 
-    .wrap{
-      min-height:100%;
-      display:flex;
-      justify-content:center;
-      padding: 18px 14px 92px; /* space for sticky */
+    .page {
+      position: relative;
+      width: min(100%, 520px);
+      margin: 0 auto;
+      padding: 18px 14px 28px;
     }
 
-    .card{
-      width:min(560px, 94vw);
-      margin-top: 10px;
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border:1px solid var(--stroke);
-      border-radius: var(--r);
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+    .topbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
-    /* Construction motif */
-    .card:before{
-      content:"";
-      position:absolute;
-      top:-70px; right:-90px;
-      width: 320px; height: 220px;
-      background: linear-gradient(90deg, rgba(255,206,74,.55), rgba(246,179,24,.10));
-      transform: rotate(12deg);
-      border-radius: 24px;
-      opacity:.85;
-    }
-    .card:after{
-      content:"";
-      position:absolute;
-      top:10px; right:18px;
-      width: 150px; height: 150px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(70,211,255,.40), transparent 60%),
-        radial-gradient(circle at 70% 70%, rgba(246,179,24,.25), transparent 60%);
-      opacity:.85;
-      pointer-events:none;
-    }
-
-    .inner{
-      padding: 18px 16px 16px;
-      position:relative;
-      z-index:1;
-    }
-
-    .topRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding: 8px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.20);
-      font-size: 12px;
-      color: rgba(255,255,255,.82);
-      font-weight: 800;
-      letter-spacing:.2px;
-      white-space:nowrap;
-    }
-    .tag .dot{
-      width:9px; height:9px; border-radius:999px;
-      background: linear-gradient(90deg, var(--tr-yellow), var(--tr-blue));
-      box-shadow: 0 0 0 6px rgba(42,168,255,.10);
-    }
-
-    .hero{ margin-top: 14px; }
-
-    .title{
-      margin: 0 0 8px;
-      font-size: 30px;
-      line-height: 1.05;
-      letter-spacing:-.6px;
-      font-weight: 1000;
-    }
-
-    .title .tr{
-      display:inline-block;
-      padding: 2px 0;
-      text-shadow:
-        -2px -2px 0 var(--tr-ink),
-         2px -2px 0 var(--tr-ink),
-        -2px  2px 0 var(--tr-ink),
-         2px  2px 0 var(--tr-ink),
-         0px  4px 0 rgba(0,0,0,.35);
-    }
-    .title .tr.yellow{ color: var(--tr-yellow); }
-    .title .tr.blue{ color: var(--tr-blue); }
-
-    .sub{
-      margin:0 0 14px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.45;
-    }
-
-    /* 3-step strip */
-    .stepsStrip{
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:10px;
-      margin: 8px 0 14px;
-    }
-    .step{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.14);
-      border-radius: 16px;
-      padding: 10px 10px;
-      min-height: 58px;
-    }
-    .step .k{
-      font-size: 11px;
-      color: rgba(255,255,255,.64);
-      margin-bottom: 6px;
-      font-weight: 800;
-      letter-spacing:.2px;
-    }
-    .step .v{
-      font-size: 13px;
-      font-weight: 900;
-      color: rgba(255,255,255,.90);
-      line-height:1.2;
-    }
-    .hiY{ color: var(--tr-yellow2); }
-    .hiB{ color: var(--tr-blue2); }
-
-    /* Details blocks */
-    details.block{
-      margin: 10px 0 12px;
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 16px;
-      background: rgba(0,0,0,.14);
-      overflow:hidden;
-    }
-    details.block summary{
-      list-style:none;
-      cursor:pointer;
-      padding: 12px 12px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size: 13px;
-      color: rgba(255,255,255,.86);
-      font-weight: 1000;
-      -webkit-tap-highlight-color: transparent;
-    }
-    details.block summary::-webkit-details-marker{display:none}
-    .chev{ opacity:.7; font-size:12px; }
-
-    .blockBody{
-      padding: 0 12px 12px;
-      color: rgba(255,255,255,.72);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .promoLine{
-      margin-top: 10px;
-      padding: 10px 10px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:
-        linear-gradient(180deg, rgba(246,179,24,.10), rgba(42,168,255,.08));
-    }
-    .codeRow{
-      margin-top: 10px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .codePill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
+    .stat {
+      min-height: 54px;
       padding: 10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      font-size: 14px;
-      font-weight: 1000;
-      letter-spacing: .8px;
-    }
-    .copyBtn{
-      border:0;
-      cursor:pointer;
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-weight: 1000;
-      font-size: 13px;
-      color: #0b0f14;
-      background: linear-gradient(90deg, var(--tr-yellow), var(--tr-blue));
-      box-shadow: 0 12px 28px rgba(246,179,24,.14);
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .copyBtn:active{ transform: translateY(1px); filter: brightness(.98); }
-    .toast{
-      margin-top: 8px;
-      font-size: 12px;
-      color: rgba(255,255,255,.66);
-      line-height: 1.35;
-    }
-
-    .help{
-      margin-top: 8px;
-      font-size: 12px;
-      color: rgba(255,255,255,.60);
-      line-height: 1.35;
-      text-align:center;
-    }
-
-    .fine{
-      margin-top: 12px;
-      font-size: 11px;
-      color: rgba(255,255,255,.46);
-      text-align:center;
-      line-height: 1.35;
-    }
-
-    /* Sticky CTA (only CTA) */
-    .sticky{
-      position:fixed;
-      left:0; right:0;
-      bottom:0;
-      padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
-      background: linear-gradient(180deg, rgba(11,18,32,0), rgba(11,18,32,.78), rgba(11,18,32,.92));
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      display:flex;
-      justify-content:center;
-      z-index:999;
-    }
-    .stickyInner{ width:min(560px, 94vw); }
-    .stickyBtn{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding: 16px 16px;
+      border: 1px solid var(--stroke);
       border-radius: 18px;
-      font-size: 18px;
-      font-weight: 1000;
-      letter-spacing: .2px;
-      border:0;
-      cursor:pointer;
-      color:#0b0f14;
-      background: linear-gradient(90deg, var(--tr-yellow), var(--tr-blue));
-      box-shadow: 0 16px 40px rgba(246,179,24,.18), 0 16px 40px rgba(42,168,255,.16);
-      -webkit-tap-highlight-color: transparent;
-      text-decoration:none;
-      text-align:center;
+      background: rgba(255, 255, 255, 0.055);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
     }
-    .stickyBtn:active{ transform: translateY(1px) scale(.995); filter: brightness(.98); }
 
-    @media (max-width: 380px){
-      .stepsStrip{ grid-template-columns: 1fr; }
+    .stat strong {
+      display: block;
+      font-size: 18px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .online-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 16px var(--green);
+      vertical-align: 1px;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.72); opacity: 0.58; }
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 8px 0 16px;
+      padding: 0 2px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -0.055em;
+      line-height: 1.08;
+    }
+
+    .hero p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .info-btn, .timer {
+      height: 38px;
+      border: 1px solid var(--stroke-strong);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.07);
+      color: #fff;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.20);
+    }
+
+    .info-btn {
+      width: 38px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .timer {
+      display: grid;
+      place-items: center;
+      min-width: 76px;
+      padding: 0 14px;
+      font-size: 14px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .game-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 258px;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--card-2), var(--card));
+      box-shadow: var(--shadow);
+      isolation: isolate;
+      transform: translateZ(0);
+    }
+
+    .game-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.07), transparent 48%, rgba(0, 0, 0, 0.24));
+      z-index: 2;
+    }
+
+    .media {
+      position: relative;
+      height: 172px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.01);
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 5;
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: #101010;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 1000;
+      letter-spacing: 0.02em;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+    }
+
+    .badge.hot { background: linear-gradient(135deg, #ffdf65, #ff4867); color: #fff; }
+    .badge.new { background: linear-gradient(135deg, #7dffb1, #20d2ff); color: #072116; }
+    .badge.vip { background: linear-gradient(135deg, #ffd15a, #b06cff); color: #fff; }
+    .badge.top { background: linear-gradient(135deg, #ffffff, #76a9ff); color: #09111f; }
+
+    .content {
+      position: relative;
+      z-index: 4;
+      padding: 10px 12px 12px;
+    }
+
+    .content h2 {
+      margin: 0 0 8px;
+      min-height: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+    }
+
+    .play-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 39px;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ff325d, #ff7a2f);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 1000;
+      box-shadow: 0 14px 32px rgba(255, 69, 55, 0.28);
+      cursor: pointer;
+      transition: transform 0.16s ease, filter 0.16s ease;
+    }
+
+    .play-btn:active {
+      transform: scale(0.97);
+      filter: brightness(0.94);
+    }
+
+    .play-btn.secondary {
+      background: linear-gradient(135deg, #5868ff, #b06cff);
+      box-shadow: 0 14px 32px rgba(104, 88, 255, 0.26);
+    }
+
+    .ticker {
+      display: none;
+    }
+
+    .win-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      z-index: 40;
+      width: min(calc(100% - 28px), 430px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      background: rgba(11, 16, 31, 0.92);
+      box-shadow: 0 18px 58px rgba(0, 0, 0, 0.46);
+      backdrop-filter: blur(18px);
+      transform: translate(-50%, 120px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.42s ease, opacity 0.42s ease;
+    }
+
+    .win-toast.is-visible {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+
+    .flag {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.10);
+      font-size: 21px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.13);
+    }
+
+    .win-text {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .win-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 1000;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .win-title b {
+      color: var(--yellow);
+    }
+
+    .win-subtitle {
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 11px;
+      font-weight: 750;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .win-amount {
+      flex: 0 0 auto;
+      padding: 7px 9px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(82, 255, 154, 0.22), rgba(255, 209, 90, 0.14));
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 1000;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0, 0, 0, 0.62);
+      backdrop-filter: blur(10px);
+    }
+
+    .modal.is-open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(100%, 420px);
+      position: relative;
+      padding: 22px 18px 18px;
+      border: 1px solid var(--stroke-strong);
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 63, 100, 0.18), transparent 38%),
+        #101522;
+      box-shadow: 0 28px 100px rgba(0, 0, 0, 0.55);
+    }
+
+    .close {
+      position: absolute;
+      top: 11px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .modal-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      letter-spacing: -0.04em;
+    }
+
+    .modal-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
+    @media (max-width: 380px) {
+      .page { padding-inline: 10px; }
+      .grid { gap: 10px; }
+      .game-card { min-height: 240px; border-radius: 22px; }
+      .media { height: 158px; }
+      .content { padding: 9px 10px 11px; }
+      .content h2 { font-size: 13px; min-height: 18px; margin-bottom: 7px; }
+      .play-btn { font-size: 12px; min-height: 36px; }
+      .hero h1 { font-size: 23px; }
     }
   </style>
 </head>
-
 <body>
-  <main class="wrap">
-    <section class="card" role="region" aria-label="Tower Rush landing">
-      <div class="inner">
-
-        <div class="topRow">
-          <div class="tag"><span class="dot"></span> まずはゲームを試してみて</div>
-        </div>
-
-        <div class="hero">
-          <h1 class="title">
-            <span class="tr yellow">タワー</span> <span class="tr blue">ラッシュ</span><br>
-            <span class="hiY">今すぐ</span>プレイ
-          </h1>
-          <p class="sub">
-            迷わなくてOK 👇<br>
-            <b>1タップ</b> → <b>登録</b> → <b>開始</b>
-          </p>
-        </div>
-
-        <div class="stepsStrip" aria-label="3-step">
-          <div class="step">
-            <div class="k">STEP 1</div>
-            <div class="v"><span class="hiY">下のボタン</span>を押す</div>
-          </div>
-          <div class="step">
-            <div class="k">STEP 2</div>
-            <div class="v"><span class="hiB">登録</span>（約30秒）</div>
-          </div>
-          <div class="step">
-            <div class="k">STEP 3</div>
-            <div class="v">そのまま<span class="hiY">プレイ</span></div>
-          </div>
-        </div>
-
-        <!-- Bonus / deposit hidden -->
-        <details class="block">
-          <summary>
-            🎁 特典・コード（必要な人だけ）
-            <span class="chev">▼</span>
-          </summary>
-          <div class="blockBody">
-            <div class="promoLine">
-              初回入金 <b>500%</b> ボーナス（対象の場合）<br>
-              <span style="opacity:.85;">登録時の「プロモコード」に入力</span>
-            </div>
-
-            <div class="codeRow">
-              <div class="codePill">🔒 CODE: <span id="promoCode">TOWER5</span></div>
-              <button class="copyBtn" id="copyBtn" type="button">コピー</button>
-            </div>
-
-            <div class="toast" id="toast">✅ コピー → 登録時に貼り付け</div>
-          </div>
-        </details>
-
-        <!-- How-to hidden -->
-        <details class="block">
-          <summary>
-            📌 かんたん手順（画像付き）
-            <span class="chev">▼</span>
-          </summary>
-          <div class="blockBody">
-            <ol style="margin:10px 0 10px; padding-left: 18px;">
-              <li>下のボタン → サイトへ</li>
-              <li>登録（電話番号/メール）</li>
-              <li>そのままプレイ</li>
-            </ol>
-
-            <div style="display:flex; gap:10px; overflow-x:auto; scroll-snap-type:x mandatory; padding:2px 0 6px; -webkit-overflow-scrolling:touch;">
-              <div style="flex:0 0 78%; scroll-snap-align:start; border-radius:14px; border:1px solid rgba(255,255,255,.10); overflow:hidden; background: rgba(255,255,255,.04);">
-                <img loading="lazy" src="./TOWER5-2.jpg" alt="登録ガイド 1" style="width:100%; height:auto; display:block;">
-                <div style="padding:8px 10px; font-size:11px; color: rgba(255,255,255,.62);">① コード欄の場所</div>
-              </div>
-              <div style="flex:0 0 78%; scroll-snap-align:start; border-radius:14px; border:1px solid rgba(255,255,255,.10); overflow:hidden; background: rgba(255,255,255,.04);">
-                <img loading="lazy" src="./TOWER5.jpg" alt="登録ガイド 2" style="width:100%; height:auto; display:block;">
-                <div style="padding:8px 10px; font-size:11px; color: rgba(255,255,255,.62);">② 入力 → 適用</div>
-              </div>
-            </div>
-
-            <div style="margin-top:6px;opacity:.85;">
-              💡 画像の通りにやればOKです。
-            </div>
-          </div>
-        </details>
-
-        <div class="help">
-          インスタで開けない場合：右上の <b>⋯</b> → <b>ブラウザで開く</b>
-        </div>
-
-        <div class="fine">
-          ※ 条件・特典はサイト側でご確認ください。
-        </div>
-
+  <main class="page">
+    <section class="topbar" aria-label="Статистика">
+      <div class="stat">
+        <strong><i class="online-dot"></i><span id="onlineCount">2845</span> чел.</strong>
+        <span>сейчас играют</span>
+      </div>
+      <div class="stat">
+        <strong>+<span id="winCount">123</span> чел.</strong>
+        <span>активны за последний час</span>
       </div>
     </section>
+
+    <section class="hero">
+      <div>
+        <h1>Популярные игры</h1>
+        <p>Выбери игру и начни прямо сейчас</p>
+      </div>
+      <div class="hero-actions">
+        <button class="info-btn" type="button" aria-label="Как начать" id="openModal">?</button>
+        <div class="timer" id="timer">03:00</div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Список игр">
+      <article class="game-card">
+        <span class="badge hot">HOT</span>
+        <div class="media">
+          <img src="assets/game-1.gif" alt="AVIAMASTERS 2" loading="eager" decoding="async" />
+        </div>
+        <div class="content">
+          <h2>AVIAMASTERS 2</h2>
+          <a class="play-btn" href="https://lb333.me/0Z8t7o" rel="nofollow noopener noreferrer">▶ Играть</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <span class="badge new">NEW</span>
+        <div class="media">
+          <img src="assets/game-2.gif" alt="TOWER RUSH" loading="lazy" decoding="async" />
+        </div>
+        <div class="content">
+          <h2>TOWER RUSH</h2>
+          <a class="play-btn" href="https://lb333.me/0Z8t7o" rel="nofollow noopener noreferrer">▶ Играть</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <span class="badge vip">VIP</span>
+        <div class="media">
+          <img src="assets/game-3.gif" alt="TAPPY BIRD" loading="lazy" decoding="async" />
+        </div>
+        <div class="content">
+          <h2>TAPPY BIRD</h2>
+          <a class="play-btn" href="https://lb333.me/0Z8t7o" rel="nofollow noopener noreferrer">▶ Играть</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <span class="badge top">TOP</span>
+        <div class="media">
+          <img src="assets/game-4.gif" alt="Telegram с бонусами" loading="lazy" decoding="async" />
+        </div>
+        <div class="content">
+          <h2>БОНУСЫ В TELEGRAM</h2>
+          <a class="play-btn secondary" href="https://t.me/easy_avia" rel="nofollow noopener noreferrer">▶ Открыть</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="ticker" id="ticker" aria-live="polite"></section>
   </main>
 
-  <!-- ONLY CTA -->
-  <div class="sticky" aria-label="Sticky button">
-    <div class="stickyInner">
-      <a class="stickyBtn" id="stickyBtn" href="#" rel="noopener">▶️ 今すぐプレイ（1タップ）</a>
+  <aside class="win-toast" id="winToast" aria-live="polite">
+    <div class="flag">🎮</div>
+    <div class="win-text">
+      <div class="win-title"><span id="toastId">ID: min***</span> только что <b>зашёл в игру</b></div>
+      <div class="win-subtitle" id="toastGame">AVIAMASTERS 2 · сейчас онлайн</div>
+    </div>
+    <div class="win-amount" id="toastAmount">онлайн</div>
+  </aside>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
+    <div class="modal-card">
+      <button class="close" type="button" id="closeModal" aria-label="Закрыть">×</button>
+      <h3 id="infoTitle">Как начать</h3>
+      <p>Выбери игру из списка и нажми кнопку. Если страница не открылась сразу, то включи VPN.</p>
     </div>
   </div>
 
   <script>
-    // =========================
-    // 1) YOUR TARGET LINK HERE
-    // =========================
-    const TARGET_URL = "https://lkvn.cc/b5cf5f9d"; // <-- поменяй, если нужно
+    const CONFIG = {
+      onlineMin: 2360,
+      onlineMax: 3920,
+      onlineStart: 2845,
+      winsMin: 98,
+      winsMax: 178,
+      winsStart: 123,
+      countdownSeconds: 180,
+      jackpotItems: [
+        { id: "kim***", game: "AVIAMASTERS 2", amount: "онлайн" },
+        { id: "min***", game: "TOWER RUSH", amount: "онлайн" },
+        { id: "seo***", game: "TAPPY BIRD", amount: "онлайн" },
+        { id: "han***", game: "Telegram-канал", amount: "открыто" },
+        { id: "woo***", game: "AVIAMASTERS 2", amount: "онлайн" }
+      ]
+    };
 
-    // =========================
-    // 2) KEEP QUERY PARAMS
-    // =========================
-    function buildUrl(base) {
-      const u = new URL(base);
-      const qs = new URLSearchParams(window.location.search);
-      for (const [k, v] of qs.entries()) {
-        if (!u.searchParams.has(k)) u.searchParams.set(k, v);
-      }
-      return u.toString();
+    const $ = (selector) => document.querySelector(selector);
+
+    const onlineCount = $("#onlineCount");
+    const winCount = $("#winCount");
+    const timer = $("#timer");
+    const winToast = $("#winToast");
+    const toastId = $("#toastId");
+    const toastGame = $("#toastGame");
+    const toastAmount = $("#toastAmount");
+    const modal = $("#modal");
+
+    let currentOnline = CONFIG.onlineStart;
+    let currentWins = CONFIG.winsStart;
+    let secondsLeft = CONFIG.countdownSeconds;
+    let tickerIndex = 0;
+    let toastTimer = null;
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
     }
 
-    const finalUrl = buildUrl(TARGET_URL);
-    document.getElementById("stickyBtn").href = finalUrl;
-
-    // =========================
-    // 3) COPY PROMO CODE
-    // =========================
-    const promoEl = document.getElementById("promoCode");
-    const copyBtn = document.getElementById("copyBtn");
-    const toast = document.getElementById("toast");
-
-    if (promoEl && copyBtn && toast) {
-      const promo = promoEl.textContent.trim();
-
-      async function copyCode() {
-        try {
-          await navigator.clipboard.writeText(promo);
-          toast.textContent = "✅ コピーしました！登録時に貼り付けてね🔥";
-          setTimeout(() => toast.textContent = "✅ コピー → 登録時に貼り付け", 2200);
-        } catch (e) {
-          const ta = document.createElement("textarea");
-          ta.value = promo;
-          document.body.appendChild(ta);
-          ta.select();
-          document.execCommand("copy");
-          document.body.removeChild(ta);
-          toast.textContent = "✅ コピーしました！登録時に貼り付けてね🔥";
-          setTimeout(() => toast.textContent = "✅ コピー → 登録時に貼り付け", 2200);
-        }
-      }
-
-      copyBtn.addEventListener("click", copyCode);
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    // reduce tap delay
-    document.getElementById("stickyBtn").addEventListener("touchstart", () => {}, { passive:true });
+    function updateStats() {
+      currentOnline = clamp(currentOnline + randomInt(-17, 24), CONFIG.onlineMin, CONFIG.onlineMax);
+      currentWins = clamp(currentWins + randomInt(-2, 4), CONFIG.winsMin, CONFIG.winsMax);
+      onlineCount.textContent = currentOnline.toLocaleString("ru-RU");
+      winCount.textContent = currentWins.toLocaleString("ru-RU");
+    }
+
+    function updateTimer() {
+      const minutes = Math.floor(secondsLeft / 60).toString().padStart(2, "0");
+      const seconds = (secondsLeft % 60).toString().padStart(2, "0");
+      timer.textContent = `${minutes}:${seconds}`;
+      secondsLeft -= 1;
+      if (secondsLeft < 0) secondsLeft = CONFIG.countdownSeconds;
+    }
+
+    function showWinToast() {
+      const item = CONFIG.jackpotItems[tickerIndex % CONFIG.jackpotItems.length];
+      tickerIndex += 1;
+
+      toastId.textContent = `ID: ${item.id}`;
+      toastGame.textContent = `${item.game} · только что`;
+      toastAmount.textContent = item.amount;
+
+      winToast.classList.add("is-visible");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => {
+        winToast.classList.remove("is-visible");
+      }, 4200);
+    }
+
+    function scheduleWinToast() {
+      const delay = randomInt(6800, 11800);
+      window.setTimeout(() => {
+        showWinToast();
+        scheduleWinToast();
+      }, delay);
+    }
+
+    $("#openModal").addEventListener("click", () => modal.classList.add("is-open"));
+    $("#closeModal").addEventListener("click", () => modal.classList.remove("is-open"));
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) modal.classList.remove("is-open");
+    });
+
+    updateStats();
+    updateTimer();
+    scheduleWinToast();
+
+    setInterval(updateStats, 1900);
+    setInterval(updateTimer, 1000);
   </script>
 </body>
 </html>
